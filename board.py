@@ -55,3 +55,54 @@ def current_game_state():
     # game over if none of the above are true
     return "lost"
 
+# compress the board to use before and after merges
+def board_shift():
+    global board
+    temp_board = []
+
+    for i in range(4):
+        temp_board.append([' '] * 4)
+
+    for r in range(4):
+        curr_col = 0
+
+        for c in range(4):
+            if board[r][c] != ' ':
+                temp_board[r][curr_col] = board[r][c]
+                curr_col += 1
+
+    return temp_board
+
+# merge any adjacent cells that have the same value, left shift functionality
+def merge_cells():
+    for r in range(4):
+        for c in range(3):
+            if board[r][c] == board[r][c + 1] and board[r][c] != ' ':
+                board[r][c] *= 2
+                board[r][c + 1] = ' '
+
+# reverse row values on the board
+def reverse_board():
+    temp_board = []
+    for r in range(4):
+        temp_board.append([])
+        for c in range(4):
+            temp_board[r].append(board[r][3 - c])
+
+    return temp_board
+
+# find the transpose of the board
+# first row of transpose is first col of original matrix
+def transpose():
+    temp_board = []
+    for r in range(4):
+        temp_board.append([])
+        for c in range(4):
+            temp_board[r].append(board[c][r])
+
+    return temp_board
+
+# handle left key press
+def shift_left():
+
+
