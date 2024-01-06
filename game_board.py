@@ -24,7 +24,7 @@ def add_random_2():
 
 # determine current state of the game
 def current_game_state():
-    # check if any cell contains 2048
+    # check if any board cell contains 2048
     for row in range(4):
         for col in range(4):
             if board[row][col] == 2048:
