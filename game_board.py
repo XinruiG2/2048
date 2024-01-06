@@ -12,6 +12,10 @@ def initialize_board():
 
 # add a 2 at a random empty cell on the board
 def add_random_2():
+    status = current_game_state()
+    if status == 'continue' and board_full():
+        return
+
     r = random.randint(0, 3)
     c = random.randint(0, 3)
 
@@ -21,6 +25,14 @@ def add_random_2():
         c = random.randint(0, 3)
 
     board[r][c] = 2
+
+# if board is fully occupied with non-zero values
+def board_full():
+    for r in range(4):
+        for c in range(4):
+            if board[r][c] == 0:
+                return False
+    return True
 
 # determine current state of the game
 def current_game_state():

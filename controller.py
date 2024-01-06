@@ -31,7 +31,6 @@ def run_game():
                 game_board.shift_down()
 
         status = game_board.current_game_state()
-        print(status)
         if status == 'lost':
             display.print_output("Sorry, you lost!")
             choice = display.restart()
