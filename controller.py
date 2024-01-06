@@ -1,4 +1,4 @@
-import board
+import game_board
 import display
 
 
@@ -14,4 +14,40 @@ def start_game():
     print("Tiles with the same number merge into one when they touch.")
     print("Add them up to reach 2048 to win!")
 
-    board.initialize_board()
+    game_board.initialize_board()
+    run_game()
+
+def run_game():
+    while(True):
+        action = display.display_board(game_board.board)
+        match action.lower():
+            case 'l':
+                game_board.shift_left()
+            case 'r':
+                game_board.shift_right()
+            case 'u':
+                game_board.shift_up()
+            case _:
+                game_board.shift_down()
+
+        status = game_board.current_game_state()
+        print(status)
+        if status == 'lost':
+            display.print_output("Sorry, you lost!")
+            choice = display.restart()
+            if choice.lower() == 'yes' or choice.lower() == 'y':
+                print()
+                start_game()
+            break
+
+        elif status == 'won':
+            display.print_output("Congratulations, you won!")
+            choice = display.restart()
+            if choice.lower() == 'yes' or choice.lower() == 'y':
+                print()
+                start_game()
+            break
+
+        game_board.add_random_2()
+
+

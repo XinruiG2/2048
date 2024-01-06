@@ -5,7 +5,7 @@ board = []  # a 4x4 game board
 # create a 4x4 with all empty values except for one 2
 def initialize_board():
     for i in range(4):
-        board.append([' '] * 4)
+        board.append([0] * 4)
 
     # add a 2 to a random spot to start the game
     add_random_2()
@@ -16,7 +16,7 @@ def add_random_2():
     c = random.randint(0, 3)
 
     # continue finding a new position if cell is not empty
-    while (board[r][c] != ' '):
+    while (board[r][c] != 0):
         r = random.randint(0, 3)
         c = random.randint(0, 3)
 
@@ -30,10 +30,10 @@ def current_game_state():
             if board[row][col] == 2048:
                 return "won"
 
-    # continue if empty cells left
+    # continue if at least one empty cell left
     for row in range(4):
         for col in range(4):
-            if board[row][col] == ' ':
+            if board[row][col] == 0:
                 return "continue"
 
     # continue if board is full but two cells can be merged
@@ -63,13 +63,13 @@ def board_shift():
     temp_board = []
 
     for i in range(4):
-        temp_board.append([' '] * 4)
+        temp_board.append([0] * 4)
 
     for r in range(4):
         curr_col = 0
 
         for c in range(4):
-            if board[r][c] != ' ':
+            if board[r][c] != 0:
                 temp_board[r][curr_col] = board[r][c]
                 curr_col += 1
 
@@ -79,9 +79,9 @@ def board_shift():
 def merge_cells():
     for r in range(4):
         for c in range(3):
-            if board[r][c] == board[r][c + 1] and board[r][c] != ' ':
+            if board[r][c] == board[r][c + 1] and board[r][c] != 0:
                 board[r][c] *= 2
-                board[r][c + 1] = ' '
+                board[r][c + 1] = 0
 
 # reverse row values on the board
 def reverse_board():
@@ -113,20 +113,23 @@ def shift_left():
 
 # handle right key press
 def shift_right():
+    global board
     # use reverse function and left shift to imitate right shift
     board = reverse_board()
     shift_left()
     board = reverse_board()
 
 # handle up key press
-def up_shift():
+def shift_up():
+    global board
     # use transpose function and left shift to imitate up shift
     board = transpose()
     shift_left()
     board = transpose()
 
 # handle down key press
-def down_shift():
+def shift_down():
+    global board
     # use transpose function and right shift to imitate up shift
     board = transpose()
     shift_right()
