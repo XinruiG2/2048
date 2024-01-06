@@ -121,7 +121,6 @@ def transpose():
 # handle left key press
 def shift_left():
     # compress board to left, merge, and then compress again
-    display.display_board(board)
     board_shift()
     merge_cells()
     board_shift()

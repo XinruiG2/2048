@@ -7,13 +7,19 @@ class GameGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("2048")
-        self.master.geometry("352x550")
+        self.master.geometry("340x555")
+        self.master.configure(bg="#faf8ef")
 
-        self.game_frame = tk.Frame(self.master)
+        self.game_frame = tk.Frame(self.master, bg="#faf8ef")
 
-        self.label = tk.Label(self.game_frame, text="Welcome to 2048!", height=2, width=20)
-        self.label.pack()
-        self.canvas = tk.Frame(self.game_frame, width=450, height=352, pady=15)
+        self.label = tk.Label(self.game_frame,
+                              text="Welcome to 2048!",
+                              height=2,
+                              width=20,
+                              bg="#faf8ef",
+                              fg="#766e65")
+        self.label.pack(pady=(0, 12))
+        self.canvas = tk.Frame(self.game_frame, width=450, height=352, padx=8, pady=8, bg="#bbac9f")
         self.canvas.pack()
 
         # Pack the frames into the window using grid
@@ -28,20 +34,24 @@ class GameGUI:
 
         self.update_board()
 
-        self.action_frame = tk.Frame(self.game_frame)
-        self.action_frame.pack()
+        self.action_frame = tk.Frame(self.game_frame, bg="#faf8ef")
+        self.action_frame.pack(pady=9)
 
-        left_button = tk.Button(self.action_frame, text="Left", command=self.left_click)
-        right_button = tk.Button(self.action_frame, text="Right", command=self.right_click)
-        up_button = tk.Button(self.action_frame, text="Up", command=self.up_click)
-        down_button = tk.Button(self.action_frame, text="Down", command=self.down_click)
+        left_button = tk.Button(self.action_frame, text="Left", command=self.left_click, bg='#faf8ef',
+                                highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65")
+        right_button = tk.Button(self.action_frame, text="Right", command=self.right_click, bg="#faf8ef",
+                                 highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65")
+        up_button = tk.Button(self.action_frame, text="Up", command=self.up_click, bg="#faf8ef",
+                              highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65")
+        down_button = tk.Button(self.action_frame, text="Down", command=self.down_click, bg="#faf8ef",
+                                highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65")
 
         left_button.pack(side="left", padx=3, pady=(10, 0))
         right_button.pack(side="left", padx=3, pady=(10, 0))
         up_button.pack(side="left", padx=3, pady=(10, 0))
         down_button.pack(side="left", padx=3, pady=(10, 0))
 
-        self.frame2 = tk.Frame(self.game_frame, width=300, height=352, pady=25)
+        self.frame2 = tk.Frame(self.game_frame, width=300, height=352, pady=15, bg="#faf8ef")
         self.frame2.pack()
 
         rules_text = (
@@ -49,19 +59,17 @@ class GameGUI:
             "2. Tiles with the same number merge\ninto one when they touch.\n"
             "3. Add them up to reach 2048\nto win the game!"
         )
-        self.title = tk.Label(self.frame2, text="Rules:")
+        self.title = tk.Label(self.frame2, text="Rules:", bg="#faf8ef", fg="#766e65")
         self.title.pack()
         # Game frame elements (welcome message, restart button, and board)
-        self.label = tk.Label(self.frame2, text=rules_text)
+        self.label = tk.Label(self.frame2, text=rules_text, bg="#faf8ef", fg="#766e65")
         self.label.pack()
-
-        # self.restart_button = tk.Button(self.game_frame, text="Restart", command=self.restart_game, anchor="w", justify="left")
-        # self.restart_button.pack(fill='x')
 
     def left_click(self):
         game_board.shift_left()
         game_board.add_random_2()
         self.update_board()
+        self.check_status()
 
     def right_click(self):
         game_board.shift_right()
@@ -78,38 +86,16 @@ class GameGUI:
         game_board.add_random_2()
         self.update_board()
 
-    def start_game(self):
-        self.run_game()
-
-    def run_game(self):
-        # while (True):
-            self.master.after(50, self.update_board)
-
-            status = game_board.current_game_state()
-            if status == 'lost':
-                display.print_output("Sorry, you lost!")
-                choice = display.restart()
-                if choice.lower() == 'yes' or choice.lower() == 'y':
-                    print()
-                    self.start_game()
-                # break
-
-            elif status == 'won':
-                display.print_output("Congratulations, you won!")
-                choice = display.restart()
-                if choice.lower() == 'yes' or choice.lower() == 'y':
-                    print()
-                    self.start_game()
-                # break
-
-            game_board.add_random_2()
+    def check_status(self):
+        status = game_board.current_game_state()
+        if status == 'lost':
+            # do something, display losing screen with only welcome + new game
+        elif status == 'won':
+            # do something, display winning screen with only welcome + new game
 
     def restart_game(self):
-        choice = messagebox.askyesno("Restart", "Would you like to play again?")
-        if choice:
-            game_board.initialize_board()
-            self.update_board()
-            self.start_game()
+        game_board.initialize_board()
+        self.update_board()
 
     def update_board(self):
         for widget in self.canvas.winfo_children():
