@@ -13,6 +13,7 @@ def display_board(board):
 def print_output(output):
     print(output)
 
+# handles letting the user restart the game
 def restart():
     choice = input("Would you like to play again? If so, enter 'yes'. ")
     return choice
