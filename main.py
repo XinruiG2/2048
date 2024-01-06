@@ -1,7 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
 import game_board
-import display
 
 class GameGUI:
     def __init__(self, master):

@@ -1,7 +1,5 @@
 import random
 
-import display
-
 board = []  # a 4x4 game board
 
 # create a 4x4 with all empty values except for one 2
