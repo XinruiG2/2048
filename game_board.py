@@ -1,5 +1,7 @@
 import random
 
+import display
+
 board = []  # a 4x4 game board
 
 # create a 4x4 with all empty values except for one 2
@@ -119,6 +121,7 @@ def transpose():
 # handle left key press
 def shift_left():
     # compress board to left, merge, and then compress again
+    display.display_board(board)
     board_shift()
     merge_cells()
     board_shift()

@@ -7,7 +7,7 @@ class GameGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("2048")
-        self.master.geometry("350x532")
+        self.master.geometry("352x550")
 
         self.game_frame = tk.Frame(self.master)
 
@@ -32,10 +32,10 @@ class GameGUI:
         self.action_frame = tk.Frame(self.game_frame)
         self.action_frame.pack()
 
-        left_button = tk.Button(self.action_frame, text="Left", command=game_board.shift_left())
-        right_button = tk.Button(self.action_frame, text="Right", command=game_board.shift_right())
-        up_button = tk.Button(self.action_frame, text="Up", command=game_board.shift_up())
-        down_button = tk.Button(self.action_frame, text="Down", command=game_board.shift_down())
+        left_button = tk.Button(self.action_frame, text="Left", command=self.left_click)
+        right_button = tk.Button(self.action_frame, text="Right", command=self.right_click)
+        up_button = tk.Button(self.action_frame, text="Up", command=self.up_click)
+        down_button = tk.Button(self.action_frame, text="Down", command=self.down_click)
 
         left_button.pack(side="left", padx=3, pady=(10, 0))
         right_button.pack(side="left", padx=3, pady=(10, 0))
@@ -58,6 +58,26 @@ class GameGUI:
 
         # self.restart_button = tk.Button(self.game_frame, text="Restart", command=self.restart_game, anchor="w", justify="left")
         # self.restart_button.pack(fill='x')
+
+    def left_click(self):
+        game_board.shift_left()
+        game_board.add_random_2()
+        self.update_board()
+
+    def right_click(self):
+        game_board.shift_right()
+        game_board.add_random_2()
+        self.update_board()
+
+    def up_click(self):
+        game_board.shift_up()
+        game_board.add_random_2()
+        self.update_board()
+
+    def down_click(self):
+        game_board.shift_down()
+        game_board.add_random_2()
+        self.update_board()
 
     def start_game(self):
         self.run_game()
@@ -93,6 +113,14 @@ class GameGUI:
             self.start_game()
 
     def update_board(self):
+        for widget in self.canvas.winfo_children():
+            widget.destroy()
+
+        corresponding_colors = {0: ["#faf8ef", "#766e65"], 2: ["#faf8ef", "#766e65"], 4: ["#eee0c9", "#766e65"],
+                                8: ["#f3b279", "#f8f6f1"], 16: ["#f69563", "#f8f6f1"], 32: ["#f77c5f", "#f8f6f1"],
+                                64: ["#f75f3b", "#f8f6f1"], 128: ["#edd073", "#f8f6f1"], 256: ["#edcc61", "#f8f6f1"],
+                                512: ["#edc750", "#f8f6f1"], 1024: ["#edc43f", "#f8f6f1"], 2048: ["#edc22d", "#f8f6f1"]}
+
         for i in range(4):
             for j in range(4):
                 frame = tk.Frame(
@@ -101,30 +129,17 @@ class GameGUI:
                     borderwidth=2,
                     bg="#bbac9f"
                 )
-                label_font = ("Helvetica", 14, "bold")
+                label_font = ("Helvetica", 16, "bold")
                 frame.grid(row=i, column=j, padx=8, pady=8)
-                label = tk.Label(master=frame, text=game_board.board[i][j], width=4, height=2, bg="#faf8ef", fg="#766e65", font=label_font)
+                value = game_board.board[i][j]
+                label = tk.Label(master=frame,
+                                 text=value,
+                                 width=4,
+                                 height=2,
+                                 bg=corresponding_colors[value][0],
+                                 fg=corresponding_colors[value][1],
+                                 font=label_font)
                 label.pack()
-
-    def create_board_row(self, cell_values):
-        row_frame = tk.Frame(self.canvas)
-        row_frame.pack()
-
-        for value in cell_values:
-            button = tk.Button(row_frame, text=value)
-            button.pack(side="left", padx=2, pady = 2)
-
-    def handle_action(self, action):
-        if action.lower() == 'l':
-            game_board.shift_left()
-        elif action.lower() == 'r':
-            game_board.shift_right()
-        elif action.lower() == 'u':
-            game_board.shift_up()
-        else:
-            game_board.shift_down()
-
-        self.master.after(100, self.update_board)
 
 if __name__ == "__main__":
     root = tk.Tk()
