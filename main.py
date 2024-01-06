@@ -7,23 +7,20 @@ class GameGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("2048")
-        self.master.geometry("712x650")
+        self.master.geometry("350x532")
 
         self.game_frame = tk.Frame(self.master)
-        self.rules_frame = tk.Frame(self.master, height=380)
 
         # Game frame elements (welcome message, restart button, and board)
         self.label = tk.Label(self.game_frame, text="Welcome to 2048!", height=2, width=20)
         self.label.pack()
-        self.canvas = tk.Frame(self.game_frame, width=300, height=352)
+        self.canvas = tk.Frame(self.game_frame, width=450, height=352, pady=15)
         self.canvas.pack()
 
         # Pack the frames into the window using grid
-        self.game_frame.grid(row=0, column=0, padx=(25, 35), pady=12)
-        self.rules_frame.grid(row=0, column=1, padx=25, pady=12)
+        self.game_frame.grid(row=0, column=0, padx=35, pady=18)
 
         self.create_game_frame()
-        self.create_rules_frame()
 
         # self.start_game()
 
@@ -32,35 +29,35 @@ class GameGUI:
 
         self.update_board()
 
-        left_button = tk.Button(self.game_frame, text="Left", command=game_board.shift_left())
-        right_button = tk.Button(self.game_frame, text="Right", command=game_board.shift_right())
-        up_button = tk.Button(self.game_frame, text="Up", command=game_board.shift_up())
-        down_button = tk.Button(self.game_frame, text="Down", command=game_board.shift_down())
+        self.action_frame = tk.Frame(self.game_frame)
+        self.action_frame.pack()
+
+        left_button = tk.Button(self.action_frame, text="Left", command=game_board.shift_left())
+        right_button = tk.Button(self.action_frame, text="Right", command=game_board.shift_right())
+        up_button = tk.Button(self.action_frame, text="Up", command=game_board.shift_up())
+        down_button = tk.Button(self.action_frame, text="Down", command=game_board.shift_down())
 
         left_button.pack(side="left", padx=3, pady=(10, 0))
         right_button.pack(side="left", padx=3, pady=(10, 0))
         up_button.pack(side="left", padx=3, pady=(10, 0))
         down_button.pack(side="left", padx=3, pady=(10, 0))
 
-        # self.restart_button = tk.Button(self.game_frame, text="Restart", command=self.restart_game, anchor="w", justify="left")
-        # self.restart_button.pack(fill='x')
+        self.frame2 = tk.Frame(self.game_frame, width=300, height=352, pady=25)
+        self.frame2.pack()
 
-    def create_rules_frame(self):
         rules_text = (
-            "Use the following commands to move the tiles:\n"
-            "'U' or 'u' = Move Up\n"
-            "'D' or 'd' = Move Down\n"
-            "'L' or 'l' = Move Left\n"
-            "'R' or 'r' = Move Right\n\n"
-            "Tiles with the same number merge into one\nwhen they touch."
-            " Add them up to reach 2048\nto win the game!"
+            "1. Use the buttons to move the tiles.\n"
+            "2. Tiles with the same number merge\ninto one when they touch.\n"
+            "3. Add them up to reach 2048\nto win the game!"
         )
+        self.title = tk.Label(self.frame2, text="Rules:")
+        self.title.pack()
         # Game frame elements (welcome message, restart button, and board)
-        self.label = tk.Label(self.rules_frame, text=rules_text, anchor='n', justify="left")
+        self.label = tk.Label(self.frame2, text=rules_text)
         self.label.pack()
 
-        self.canv = tk.Frame(self.rules_frame, width=200, height=248)
-        self.canv.pack()
+        # self.restart_button = tk.Button(self.game_frame, text="Restart", command=self.restart_game, anchor="w", justify="left")
+        # self.restart_button.pack(fill='x')
 
     def start_game(self):
         self.run_game()
@@ -101,10 +98,12 @@ class GameGUI:
                 frame = tk.Frame(
                     master=self.canvas,
                     relief=tk.SUNKEN,
-                    borderwidth=2
+                    borderwidth=2,
+                    bg="#bbac9f"
                 )
+                label_font = ("Helvetica", 14, "bold")
                 frame.grid(row=i, column=j, padx=8, pady=8)
-                label = tk.Label(master=frame, text=game_board.board[i][j], width=4, height=2)
+                label = tk.Label(master=frame, text=game_board.board[i][j], width=4, height=2, bg="#faf8ef", fg="#766e65", font=label_font)
                 label.pack()
 
     def create_board_row(self, cell_values):
