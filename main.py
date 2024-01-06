@@ -76,47 +76,43 @@ class GameGUI:
         game_board.shift_right()
         game_board.add_random_2()
         self.update_board()
+        self.check_status()
 
     # handles up button click
     def up_click(self):
         game_board.shift_up()
         game_board.add_random_2()
         self.update_board()
+        self.check_status()
 
     # handles down button click
     def down_click(self):
         game_board.shift_down()
         game_board.add_random_2()
         self.update_board()
+        self.check_status()
 
     # checks and acts accordingly to the current game status
     def check_status(self):
         status = game_board.current_game_state()
 
-        self.textframe = tk.Frame(self.canvas, width=300, height=352, pady=15, bg="#faf8ef")
-        self.textframe.pack()
-
         if status == 'lost':
             for widget in self.canvas.winfo_children():
                 widget.destroy()
-            ending_label = tk.Label(self.textframe,
-                                    text="Sorry, you lost.",
-                                    fg="#766e65")
-            ending_label.pack()
+            ending_label = tk.Label(self.canvas, text="Sorry, you lost.", bg="#faf8ef", fg="#766e65", padx=5, pady=5)
+            ending_label.grid(row=0, column=0)
+            restart_button = tk.Button(self.canvas, text="New Game", command=self.restart_game, bg="#faf8ef",
+                                       highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65", pady=5, padx=4)
+            restart_button.grid(row=1, column=0)
 
         elif status == 'won':
             for widget in self.canvas.winfo_children():
                 widget.destroy()
-            ending_label = tk.Label(self.textframe,
-                                    text="Congratulations, you won!",
-                                    fg="#766e65")
-            ending_label.pack()
-
-        self.buttonframe = tk.Frame(self.canvas, width=300, height=352, pady=15, bg="#faf8ef")
-        self.buttonframe.pack()
-        restart_button = tk.Button(self.buttonframe, text="New Game", command=self.restart_game, bg="#faf8ef",
-                                   highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65")
-        restart_button.pack()
+            ending_label = tk.Label(self.canvas, text="Congratulations, you won!", bg="#faf8ef", fg="#766e65", padx=5, pady=5)
+            ending_label.grid(row=0, column=0)
+            restart_button = tk.Button(self.canvas, text="New Game", command=self.restart_game, bg="#faf8ef",
+                                       highlightthickness=0, highlightbackground="#faf8ef", fg="#766e65", pady=5, padx=4)
+            restart_button.grid(row=1, column=0)
 
     # resets the game board for a new game
     def restart_game(self):
