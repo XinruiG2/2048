@@ -11,7 +11,6 @@ class GameGUI:
 
         self.game_frame = tk.Frame(self.master)
 
-        # Game frame elements (welcome message, restart button, and board)
         self.label = tk.Label(self.game_frame, text="Welcome to 2048!", height=2, width=20)
         self.label.pack()
         self.canvas = tk.Frame(self.game_frame, width=450, height=352, pady=15)
